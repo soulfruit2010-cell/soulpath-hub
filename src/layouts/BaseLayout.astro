@@ -1,0 +1,53 @@
+---
+const { title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<link rel="icon" href="/favicon.svg" />
+
+<style>
+body {
+  font-family: system-ui;
+  margin: 0;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+input, button, select {
+  padding: 12px;
+  margin: 8px 0;
+  width: 100%;
+}
+button {
+  background: #6366f1;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🔮 SoulPath Hub</h1>
+    <slot />
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { calculateLifePath } from '../../utils/numerology.js';
+
+export async function getStaticPaths() {
+  return [];
+}
+
+const { slug } = Astro.params;
+
+const parts = slug.split("-");
+const dob = parts.pop();
+const name = parts.join(" ");
+
+const formattedDate = `${dob.slice(0,4)}-${dob.slice(4,6)}-${dob.slice(6,8)}`;
+
+const lifePath = calculateLifePath(formattedDate);
+
+const title = `${name} Life Path Number ${lifePath} Meaning | SoulPath Hub`;
+const description = `Discover ${name}'s life path number ${lifePath} and spiritual meaning.`;
+---
+
+<BaseLayout title={title} description={description}>
+
+<div class="card">
+  <h2>{name}'s Life Path Number: {lifePath}</h2>
+
+  <p>
+    {name}, born on {formattedDate}, your life path number is <strong>{lifePath}</strong>.
+  </p>
+
+  <h3>Meaning</h3>
+  <p>
+    Life Path {lifePath} represents a unique spiritual journey filled with growth, challenges, and purpose.
+  </p>
+
+  <h3>Personality</h3>
+  <p>
+    People with this number often show strong traits aligned with their spiritual destiny.
+  </p>
+
+  <h3>Career & Love</h3>
+  <p>
+    Your path influences both your professional life and relationships.
+  </p>
+
+  <a href="/life-path/">
+    <button>Try Another</button>
+  </a>
+</div>
+
+</BaseLayout>
