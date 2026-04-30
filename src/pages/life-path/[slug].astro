@@ -2,50 +2,22 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { calculateLifePath } from '../../utils/numerology.js';
 
+export async function getStaticPaths() {
+  return [];
+}
+
 const { slug } = Astro.params;
 
 const parts = slug.split("-");
 const dob = parts.pop();
-const nameRaw = parts.join(" ");
-const name = nameRaw.charAt(0).toUpperCase() + nameRaw.slice(1);
+const name = parts.join(" ");
 
 const formattedDate = `${dob.slice(0,4)}-${dob.slice(4,6)}-${dob.slice(6,8)}`;
+
 const lifePath = calculateLifePath(formattedDate);
 
-// Basic gender detection (optional tone)
-const isFemale = name.endsWith('a');
-
-const pronoun = isFemale ? "she" : "they";
-
-// Content database
-const meanings = {
-  1: "Leadership, independence, and ambition.",
-  2: "Harmony, sensitivity, and cooperation.",
-  3: "Creativity, communication, and joy.",
-  4: "Stability, discipline, and structure.",
-  5: "Freedom, adventure, and change.",
-  6: "Responsibility, love, and care.",
-  7: "Spirituality, introspection, and wisdom.",
-  8: "Power, success, and material achievement.",
-  9: "Compassion, humanitarianism, and completion.",
-  11: "Intuition, inspiration, and enlightenment.",
-  22: "Master builder, big vision, and legacy.",
-  33: "Spiritual teacher and unconditional love."
-};
-
 const title = `${name} Life Path Number ${lifePath} Meaning | SoulPath Hub`;
-const description = `Discover ${name}'s life path number ${lifePath}, personality, career, love insights, and spiritual meaning.`;
-
-const faq = [
-  {
-    q: `What does Life Path ${lifePath} mean?`,
-    a: meanings[lifePath]
-  },
-  {
-    q: `Is Life Path ${lifePath} good?`,
-    a: `Every life path number has strengths and challenges. ${lifePath} offers a unique spiritual journey.`
-  }
-];
+const description = `Discover ${name}'s life path number ${lifePath} and spiritual meaning.`;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -54,76 +26,27 @@ const faq = [
   <h2>{name}'s Life Path Number: {lifePath}</h2>
 
   <p>
-    {name}, born on {formattedDate}, your Life Path Number is 
-    <strong>{lifePath}</strong>. This number reveals your core personality,
-    life purpose, and spiritual direction.
+    {name}, born on {formattedDate}, your life path number is <strong>{lifePath}</strong>.
   </p>
 
-  <h3>🌟 Meaning of Life Path {lifePath}</h3>
+  <h3>Meaning</h3>
   <p>
-    {name}, your life path is associated with {meanings[lifePath]} 
-    This means {pronoun} is naturally drawn toward experiences that reflect this energy.
+    Life Path {lifePath} represents a unique spiritual journey filled with growth, challenges, and purpose.
   </p>
 
-  <h3>🧠 Personality Traits</h3>
+  <h3>Personality</h3>
   <p>
-    People with Life Path {lifePath} often display characteristics aligned with their destiny. 
-    {name} may experience strong inner drives, emotional patterns, and personal growth lessons.
+    People with this number often show strong traits aligned with their spiritual destiny.
   </p>
 
-  <h3>💪 Strengths & Weaknesses</h3>
+  <h3>Career & Love</h3>
   <p>
-    {name}'s strengths include qualities connected to {meanings[lifePath]}, while challenges 
-    may appear when these traits are unbalanced.
+    Your path influences both your professional life and relationships.
   </p>
-
-  <h3>💼 Career & Life Purpose</h3>
-  <p>
-    {name}, your career path often aligns with your life path energy. Choosing a direction that 
-    resonates with your inner purpose can lead to fulfillment and success.
-  </p>
-
-  <h3>❤️ Love & Relationships</h3>
-  <p>
-    In relationships, {name} tends to express energy linked to Life Path {lifePath}. Understanding 
-    this can improve emotional connections and compatibility.
-  </p>
-
-  <h3>🔮 Spiritual Insight</h3>
-  <p>
-    Life Path {lifePath} is a journey of growth. {name} is here to learn, evolve, and fulfill 
-    a deeper spiritual mission.
-  </p>
-
-  <hr />
-
-  <h3>❓ FAQs</h3>
-  {faq.map(item => (
-    <div>
-      <strong>{item.q}</strong>
-      <p>{item.a}</p>
-    </div>
-  ))}
 
   <a href="/life-path/">
     <button>Try Another</button>
   </a>
 </div>
-
-<!-- FAQ Schema -->
-<script type="application/ld+json">
-{JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faq.map(item => ({
-    "@type": "Question",
-    "name": item.q,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": item.a
-    }
-  }))
-})}
-</script>
 
 </BaseLayout>
