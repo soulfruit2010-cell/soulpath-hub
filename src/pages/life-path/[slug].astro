@@ -1,49 +1,43 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { calculateLifePath } from '../../utils/numerology.js';
+import { lifePathContent } from '../../utils/content.js';
 
 const { slug } = Astro.params;
 
+// Parse slug
 const parts = slug.split("-");
 const dob = parts.pop();
 const nameRaw = parts.join(" ");
 const name = nameRaw.charAt(0).toUpperCase() + nameRaw.slice(1);
 
+// Format date
 const formattedDate = `${dob.slice(0,4)}-${dob.slice(4,6)}-${dob.slice(6,8)}`;
+
+// Calculate number
 const lifePath = calculateLifePath(formattedDate);
 
-// Basic gender detection (optional tone)
-const isFemale = name.endsWith('a');
-
-const pronoun = isFemale ? "she" : "they";
-
-// Content database
-const meanings = {
-  1: "Leadership, independence, and ambition.",
-  2: "Harmony, sensitivity, and cooperation.",
-  3: "Creativity, communication, and joy.",
-  4: "Stability, discipline, and structure.",
-  5: "Freedom, adventure, and change.",
-  6: "Responsibility, love, and care.",
-  7: "Spirituality, introspection, and wisdom.",
-  8: "Power, success, and material achievement.",
-  9: "Compassion, humanitarianism, and completion.",
-  11: "Intuition, inspiration, and enlightenment.",
-  22: "Master builder, big vision, and legacy.",
-  33: "Spiritual teacher and unconditional love."
+// Fallback content (IMPORTANT)
+const content = lifePathContent[lifePath] || {
+  meaning: "This life path represents a unique spiritual journey filled with growth and self-discovery.",
+  personality: "Each individual expresses this number differently, shaped by personal experiences.",
+  career: "Career paths vary, but alignment with inner purpose brings fulfillment.",
+  love: "Relationships grow through understanding, balance, and emotional connection."
 };
 
+// SEO
 const title = `${name} Life Path Number ${lifePath} Meaning | SoulPath Hub`;
-const description = `Discover ${name}'s life path number ${lifePath}, personality, career, love insights, and spiritual meaning.`;
+const description = `Discover ${name}'s life path number ${lifePath}, personality traits, career path, love insights, and spiritual meaning.`;
 
+// FAQ
 const faq = [
   {
     q: `What does Life Path ${lifePath} mean?`,
-    a: meanings[lifePath]
+    a: content.meaning
   },
   {
-    q: `Is Life Path ${lifePath} good?`,
-    a: `Every life path number has strengths and challenges. ${lifePath} offers a unique spiritual journey.`
+    q: `Is Life Path ${lifePath} a good number?`,
+    a: `Every life path number has strengths and challenges. ${lifePath} offers a unique journey of growth.`
   }
 ];
 ---
@@ -55,49 +49,43 @@ const faq = [
 
   <p>
     {name}, born on {formattedDate}, your Life Path Number is 
-    <strong>{lifePath}</strong>. This number reveals your core personality,
+    <strong>{lifePath}</strong>. This number reveals your personality,
     life purpose, and spiritual direction.
   </p>
 
   <h3>🌟 Meaning of Life Path {lifePath}</h3>
   <p>
-    {name}, your life path is associated with {meanings[lifePath]} 
-    This means {pronoun} is naturally drawn toward experiences that reflect this energy.
+    {name}, {content.meaning}
   </p>
 
   <h3>🧠 Personality Traits</h3>
   <p>
-    People with Life Path {lifePath} often display characteristics aligned with their destiny. 
-    {name} may experience strong inner drives, emotional patterns, and personal growth lessons.
+    {name}, {content.personality}
   </p>
 
-  <h3>💪 Strengths & Weaknesses</h3>
+  <h3>💪 Strengths & Challenges</h3>
   <p>
-    {name}'s strengths include qualities connected to {meanings[lifePath]}, while challenges 
-    may appear when these traits are unbalanced.
+    {name}'s strengths and challenges are influenced by this life path energy.
   </p>
 
   <h3>💼 Career & Life Purpose</h3>
   <p>
-    {name}, your career path often aligns with your life path energy. Choosing a direction that 
-    resonates with your inner purpose can lead to fulfillment and success.
+    {content.career}
   </p>
 
   <h3>❤️ Love & Relationships</h3>
   <p>
-    In relationships, {name} tends to express energy linked to Life Path {lifePath}. Understanding 
-    this can improve emotional connections and compatibility.
+    {content.love}
   </p>
 
   <h3>🔮 Spiritual Insight</h3>
   <p>
-    Life Path {lifePath} is a journey of growth. {name} is here to learn, evolve, and fulfill 
-    a deeper spiritual mission.
+    Life Path {lifePath} is a journey of growth. {name} is here to evolve and fulfill a deeper purpose.
   </p>
 
   <hr />
 
-  <h3>❓ FAQs</h3>
+  <h3>❓ Frequently Asked Questions</h3>
   {faq.map(item => (
     <div>
       <strong>{item.q}</strong>
