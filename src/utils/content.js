@@ -11,7 +11,7 @@ export const lifePathContent = {
   `,
   
   meaning: `
-<strong>Life Path 1</strong> is is known as the path of the leader, pioneer, and creator. If your life path is 1, you are here to carve your own path, not follow someone else’s. This number carries powerful energy of independence, ambition, and originality.<br>
+<p><strong>Life Path 1</strong> is is known as the path of the leader, pioneer, and creator. If your life path is 1, you are here to carve your own path, not follow someone else’s. This number carries powerful energy of independence, ambition, and originality.</p>
 
 <p>People with Life Path 1 are natural-born initiators. They thrive when starting new projects, leading others, and turning ideas into reality. At a deeper level, this number represents the journey of self-discovery and personal power—learning to trust yourself and stand confidently in your identity.</p>
 
