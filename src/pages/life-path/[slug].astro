@@ -55,7 +55,7 @@ const faq = [
 
   <h3>🌟 Meaning of Life Path {lifePath}</h3>
   <p>
-    {name}, {content.meaning}
+    {name}, <div set:html={content.meaning}></div>
   </p>
 
   <h3>🧠 Personality Traits</h3>
