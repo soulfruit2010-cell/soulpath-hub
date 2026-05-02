@@ -1,35 +1,79 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { calculateLifePath } from '../../utils/numerology.js';
 import { lifePathContent } from '../../utils/content.js';
 
 const { slug } = Astro.params;
 
-// Parse slug
+// -------------------------
+// PARSE SLUG SAFELY
+// -------------------------
 const parts = slug.split("-");
-const dob = parts.pop();
+const dob = parts.pop(); // last part = date
 const nameRaw = parts.join(" ");
-const name = nameRaw.charAt(0).toUpperCase() + nameRaw.slice(1);
+const name = nameRaw
+  ? nameRaw.charAt(0).toUpperCase() + nameRaw.slice(1)
+  : "User";
 
-// Format date
+// -------------------------
+// VALIDATE DATE
+// -------------------------
+if (!dob || dob.length !== 8) {
+  throw new Error("Invalid URL format");
+}
+
+// format date
 const formattedDate = `${dob.slice(0,4)}-${dob.slice(4,6)}-${dob.slice(6,8)}`;
 
-// Calculate number
-const lifePath = calculateLifePath(formattedDate);
+// -------------------------
+// CALCULATE LIFE PATH (SAFE)
+// -------------------------
+function calculateLifePathSafe(dateStr) {
+  const digits = dateStr.replace(/-/g, "").split("").map(Number);
 
-// Fallback content (IMPORTANT)
+  let sum = digits.reduce((a, b) => a + b, 0);
+
+  while (sum > 9) {
+    sum = sum
+      .toString()
+      .split("")
+      .map(Number)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  return sum;
+}
+
+const digits = dob.split("").map(Number);
+
+let sum = digits.reduce((a, b) => a + b, 0);
+
+while (sum > 9) {
+  sum = sum.toString().split("").map(Number).reduce((a,b)=>a+b,0);
+}
+
+const lifePath = sum;
+
+// -------------------------
+// CONTENT
+// -------------------------
 const content = lifePathContent[lifePath] || {
   meaning: "This life path represents a unique spiritual journey filled with growth and self-discovery.",
   personality: "Each individual expresses this number differently, shaped by personal experiences.",
+  strengths: "Strength comes from adaptability and personal growth.",
+  weaknesses: "Challenges help shape resilience and wisdom.",
   career: "Career paths vary, but alignment with inner purpose brings fulfillment.",
   love: "Relationships grow through understanding, balance, and emotional connection."
 };
 
+// -------------------------
 // SEO
+// -------------------------
 const title = `${name} Life Path Number ${lifePath} Meaning | SoulPath Hub`;
 const description = `Discover ${name}'s life path number ${lifePath}, personality traits, career path, love insights, and spiritual meaning.`;
 
+// -------------------------
 // FAQ
+// -------------------------
 const faq = [
   {
     q: `What does Life Path ${lifePath} mean?`,
@@ -54,29 +98,22 @@ const faq = [
   </p>
 
   <h3>🌟 Meaning of Life Path {lifePath}</h3>
-  <p>
-    {name}, <div set:html={content.meaning}></div>
-  </p>
+  <p>{name}, {content.meaning}</p>
 
   <h3>🧠 Personality Traits</h3>
-  <p>
-    {name}, {content.personality}
-  </p>
+  <p>{name}, {content.personality}</p>
 
-  <h3>💪 Strengths & Challenges</h3>
-  <p>
-    {name}'s strengths and challenges are influenced by this life path energy.
-  </p>
+  <h3>💪 Strengths</h3>
+  <p>{content.strengths}</p>
+
+  <h3>⚠️ Challenges</h3>
+  <p>{content.weaknesses}</p>
 
   <h3>💼 Career & Life Purpose</h3>
-  <p>
-    {content.career}
-  </p>
+  <p>{content.career}</p>
 
   <h3>❤️ Love & Relationships</h3>
-  <p>
-    {content.love}
-  </p>
+  <p>{content.love}</p>
 
   <h3>🔮 Spiritual Insight</h3>
   <p>
@@ -84,6 +121,19 @@ const faq = [
   </p>
 
   <hr />
+
+  <h3>🔍 Explore More Life Path Readings</h3>
+  <p>Discover other life path numbers and their meanings:</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+    {[1,2,3,4,5,6,7,8,9].map(num => (
+      <a href={`/life-path/${num}`} style="text-decoration:none;">
+        <div style="background:#334155;padding:10px;border-radius:8px;text-align:center;">
+          Life Path {num}
+        </div>
+      </a>
+    ))}
+  </div>
 
   <h3>❓ Frequently Asked Questions</h3>
   {faq.map(item => (
@@ -95,6 +145,20 @@ const faq = [
 
   <a href="/life-path/">
     <button>Try Another</button>
+  </a>
+</div>
+
+<div style="margin-top:30px;text-align:center;">
+  <p>✨ Share your Life Path result:</p>
+
+  <a href={`https://twitter.com/intent/tweet?text=My Life Path Number is ${lifePath}! Discover yours:`}>
+    Share on Twitter
+  </a>
+
+  <br /><br />
+
+  <a href={`https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com/life-path/${slug}`}>
+    Share on Facebook
   </a>
 </div>
 

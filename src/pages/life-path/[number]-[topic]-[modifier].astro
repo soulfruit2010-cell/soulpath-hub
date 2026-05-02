@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lifePathContent } from '../../utils/content.js';
+
+const { number, topic, modifier } = Astro.params;
+const num = Number(number);
+
+const content = lifePathContent[num] || {};
+
+const title = `Life Path ${num} ${topic} ${modifier} Guide`;
+const description = `Discover Life Path ${num} ${topic} ${modifier} in this complete guide.`;
+
+---
+
+<BaseLayout title={title} description={description}>
+
+<div class="card">
+  <h1>{title}</h1>
+
+  <p>
+    This guide explores Life Path {num} {topic} {modifier} in detail. 
+    Understanding this aspect helps you gain deeper insight into your life path journey.
+  </p>
+
+  <p>
+    {content[topic] || content.meaning}
+  </p>
+
+  <h2>🔍 Deeper Insight</h2>
+  <p>
+    Each life path carries layers of meaning. Exploring {topic} and {modifier} 
+    reveals deeper patterns and personal growth opportunities.
+  </p>
+
+  <hr />
+
+  <h3>🔗 Explore More</h3>
+  <ul>
+    <li><a href={`/life-path/${num}`}>Life Path {num} Overview</a></li>
+    <li><a href={`/life-path/${num}-${topic}`}>Life Path {num} {topic}</a></li>
+    <li><a href="/life-path/">Calculate Your Life Path</a></li>
+  </ul>
+
+</div>
+
+</BaseLayout>

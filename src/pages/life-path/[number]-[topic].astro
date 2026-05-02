@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lifePathContent } from '../../utils/content.js';
+
+const { number, topic } = Astro.params;
+const num = Number(number);
+
+const content = lifePathContent[num] || {};
+
+const topicMap = {
+  love: {
+    title: `Life Path ${num} Love and Relationships`,
+    content: content.dlove
+  },
+  career: {
+    title: `Life Path ${num} Career and Success`,
+    content: content.dcareer
+  },
+  personality: {
+    title: `Life Path ${num} Personality Traits`,
+    content: content.dpersonality
+  },
+  compatibility: {
+    title: `Life Path ${num} Compatibility`,
+    content: content.dcompability
+  }
+};
+
+const data = topicMap[topic] || {
+  title: `Life Path ${num}`,
+  content: content.meaning
+};
+
+const title = `${data.title}: Life Path ${num} ${topic} Guide`;
+const description = `${data.title} explained in detail.`;
+---
+
+<BaseLayout title={title} description={description}>
+
+<div class="card">
+  <h1>{data.title}</h1>
+<p>
+Want to understand Life Path {num} deeply? This complete guide explains personality, love life, career paths, strengths, weaknesses, and compatibility in detail.
+</p>
+  <p><div set:html={data.content}></div></p>
+
+  <hr />
+
+  <h3>🔗 Explore More</h3>
+  <ul>
+    <li><a href={`/life-path/${num}`}>Full Life Path {num} Reading</a></li>
+    <li><a href="/life-path/">Calculate Your Life Path</a></li>
+  </ul>
+  <h4>More insights:</h4>
+<ul>
+  <li><a href={`/life-path/${num}-${topic}-meaning`}>Meaning</a></li>
+  <li><a href={`/life-path/${num}-${topic}-advice`}>Advice</a></li>
+</ul>
+</div>
+
+</BaseLayout>

@@ -6,13 +6,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="SoulPath Hub - Spiritual Calculators"
   description="Discover your life path, destiny number, and spiritual insights.">
 
-  <div class="card">
-    <h2>Welcome to SoulPath Hub</h2>
-    <p>Explore your spiritual numbers and uncover your destiny.</p>
+<div class="card">
+  <h2>Welcome to SoulPath Hub</h2>
+  <p>Explore your spiritual numbers and uncover your destiny.</p>
 
-    <a href="/life-path/">
-      <button>Start Life Path Calculator</button>
-    </a>
+  <a href="/life-path/">
+    <button>Start Life Path Calculator</button>
+  </a>
+</div>
+
+<div class="card">
+  <h2>🔢 Explore Life Path Numbers</h2>
+  <p>Learn the meaning of each Life Path Number:</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+    {[1,2,3,4,5,6,7,8,9].map(num => (
+      <a href={`/life-path/${num}`} style="text-decoration:none;">
+        <div style="background:#334155;padding:12px;border-radius:8px;text-align:center;">
+          Life Path {num}
+        </div>
+      </a>
+    ))}
   </div>
+</div>
+
+<div class="card">
+  <h2>✨ Popular Readings</h2>
+  <ul>
+    <li><a href="/life-path/7">Life Path 7 Meaning</a></li>
+	<li><a href="/life-path/3">Life Path 3 Personality</a></li>
+	<li><a href="/life-path/6">Life Path 6 Love Life</a></li>
+  </ul>
+</div>
 
 </BaseLayout>

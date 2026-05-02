@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lifePathContent } from '../../utils/content.js';
+
+const { number } = Astro.params;
+
+// ✅ safer parsing
+const num = parseInt(number);
+
+if (isNaN(num)) {
+  throw new Error("Invalid Life Path number");
+}
+
+const content = lifePathContent[num] || {};
+
+const title = `Life Path ${num} Meaning: Personality, Love, Career & Compatibility (Complete Guide)`;
+const description = `Discover everything about Life Path Number ${num}: meaning, personality traits, career paths, love compatibility, and spiritual insights.`;
+---
+
+<BaseLayout title={title} description={description}>
+
+<div class="card">
+  <h1>Life Path Number {num}</h1>
+
+  <!-- Ad -->
+  <div style="margin:20px 0;text-align:center;">
+    <div style="background:#1e293b;padding:20px;border-radius:8px;">
+      Advertisement
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <p>
+    <a href="/">Home</a> → <a href="/life-path/">Life Path</a> → {num}
+  </p>
+
+  <!-- Intro -->
+  <div set:html={content.intro}></div>
+
+  <p>
+    👉 Curious what YOUR life path reveals? 
+    <a href="/life-path/">Calculate your number now</a>
+  </p>
+
+  <!-- Meaning -->
+  <h2>🌟 Life Path {num} Meaning</h2>
+  <div set:html={content.meaning}></div>
+
+  <!-- Personality -->
+  <h2>🧠 Personality Traits of Life Path {num}</h2>
+  <div set:html={content.personality}></div>
+
+  <!-- Strength -->
+  <h2>💪 Strengths of Life Path {num}</h2>
+  <div set:html={content.strengths}></div>
+
+  <!-- Ad -->
+  <div style="margin:30px 0;text-align:center;">
+    <div style="background:#1e293b;padding:20px;border-radius:8px;">
+      Advertisement
+    </div>
+  </div>
+
+  <!-- Weakness -->
+  <h2>⚠️ Weaknesses of Life Path {num}</h2>
+  <div set:html={content.weaknesses}></div>
+
+  <!-- Career -->
+  <h2>💼 Career for Life Path {num}</h2>
+  <div set:html={content.career}></div>
+
+  <!-- Love -->
+  <h2>❤️ Love & Relationships</h2>
+  <div set:html={content.love}></div>
+
+  <!-- Compatibility -->
+  <h2>💞 Compatibility</h2>
+  <div set:html={content.compatibility}></div>
+
+  <!-- Spiritual -->
+  <h2>🔮 Spiritual Meaning</h2>
+  <div set:html={content.spiritual}></div>
+
+  <hr />
+
+  <!-- Detail -->
+  <h2>📘 Detailed Interpretation of Life Path {num}</h2>
+  <div set:html={content.detail}></div>
+
+  <!-- Related topics -->
+  <h3>🔗 Related Life Path {num} Topics</h3>
+  <ul>
+    <li><a href={`/life-path/${num}-love`}>Love & Relationships</a></li>
+    <li><a href={`/life-path/${num}-career`}>Career & Success</a></li>
+    <li><a href={`/life-path/${num}-personality`}>Personality Traits</a></li>
+    <li><a href={`/life-path/${num}-compatibility`}>Compatibility</a></li>
+  </ul>
+
+  <!-- Other numbers -->
+  <h3>🔢 Explore Other Life Path Numbers</h3>
+  <ul>
+    {[1,2,3,4,5,6,7,8,9].map(n => (
+      <li><a href={`/life-path/${n}`}>Life Path {n}</a></li>
+    ))}
+  </ul>
+
+  <!-- Ad -->
+  <div style="margin:30px 0;text-align:center;">
+    <div style="background:#1e293b;padding:20px;border-radius:8px;">
+      Advertisement
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <h3>🔗 Try the Calculator</h3>
+  <p>Want a personalized reading?</p>
+  <a href="/life-path/">
+    <button>Calculate Your Life Path</button>
+  </a>
+
+</div>
+
+<hr />
+
+<!-- FAQ -->
+<h3>❓ Frequently Asked Questions</h3>
+<div set:html={content.faq}></div>
+
+</BaseLayout>

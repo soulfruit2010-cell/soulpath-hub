@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lifePathContent } from '../../utils/content.js';
+import { calculateLifePath } from '../../utils/numerology.js';
+
+const { slug } = Astro.params;
+
+// ✅ Prevent conflict with /life-path/7, /life-path/3, etc.
+if (/^\d+$/.test(slug)) {
+  return Astro.redirect(`/life-path/${slug}`);
+}
+
+// ✅ Safe parsing
+let name = "";
+let date = "";
+
+if (slug.includes("-")) {
+  const parts = slug.split("-");
+  name = parts[0] || "";
+  date = parts[1] || "";
+}
+
+// ✅ Simple Life Path calculation
+function calculateLifePath(dateStr) {
+  if (!dateStr) return null;
+
+  const digits = dateStr.replace(/\D/g, "").split("").map(Number);
+  let sum = digits.reduce((a, b) => a + b, 0);
+
+  while (sum > 9) {
+    sum = sum.toString().split("").reduce((a, b) => a + Number(b), 0);
+  }
+
+  return sum;
+}
+
+const lifePath = calculateLifePath(date);
+
+// ✅ Fallback if invalid
+if (!lifePath) {
+  throw new Error("Invalid birthdate format");
+}
+
+const content = lifePathContent[lifePath] || {};
+
+const title = `${name}'s Life Path Number is ${lifePath} | SoulPath Hub`;
+const description = `Discover ${name}'s Life Path Number ${lifePath}, including personality, love, and career insights.`;
+---
+
+<BaseLayout title={title} description={description}>
+
+<div class="card">
+  <h1>{name}'s Life Path Number: {lifePath}</h1>
+
+  <p>
+    Based on the birthdate <strong>{date}</strong>, {name} has a Life Path Number of <strong>{lifePath}</strong>.
+  </p>
+
+  <hr />
+
+  <h2>🌟 Meaning</h2>
+  <div set:html={content.meaning}></div>
+
+  <h2>🧠 Personality</h2>
+  <div set:html={content.personality}></div>
+
+  <h2>💪 Strengths</h2>
+  <div set:html={content.strengths}></div>
+
+  <h2>⚠️ Weaknesses</h2>
+  <div set:html={content.weaknesses}></div>
+
+  <h2>💼 Career</h2>
+  <div set:html={content.career}></div>
+
+  <h2>❤️ Love</h2>
+  <div set:html={content.love}></div>
+
+  <hr />
+
+  <h3>🔗 Explore More</h3>
+  <ul>
+    <li><a href={`/life-path/${lifePath}`}>Full Life Path {lifePath} Meaning</a></li>
+    <li><a href="/life-path/">Calculate Another Life Path</a></li>
+  </ul>
+
+  <div style="margin-top:30px;text-align:center;">
+    <p>✨ Share your Life Path result:</p>
+
+    <a href={`https://twitter.com/intent/tweet?text=My Life Path Number is ${lifePath}! Discover yours:`}>
+      Share on Twitter
+    </a>
+
+    <br /><br />
+
+    <a href={`https://www.facebook.com/sharer/sharer.php?u=/life-path/${slug}`}>
+      Share on Facebook
+    </a>
+  </div>
+</div>
+
+</BaseLayout>
